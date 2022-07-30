@@ -5,7 +5,7 @@ import "dotenv/config";
 import users from "../../database";
 
 const newSessionService = async ({ email, password }) => {
-  const user = users.find((user) => (user.email = email));
+  const user = users.find((user) => user.email === email);
 
   if (!user) return false;
 

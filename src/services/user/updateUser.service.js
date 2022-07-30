@@ -1,12 +1,16 @@
 import users from "../../database";
 
-const updateUserService = ({ email, name, id, isAdm }) => {
+const updateUserService = ({ email, name, password, id, isAdm, userId }) => {
   const updatedUser = {
     email,
     name,
-    uuid: id,
+    password,
     updatedOn: new Date(),
   };
+
+  for (let key in updatedUser) {
+    !!updatedUser[key] ? {} : delete updatedUser[key];
+  }
 
   const userIndex = users.findIndex((user) => user.uuid === id);
 
@@ -25,7 +29,7 @@ const updateUserService = ({ email, name, id, isAdm }) => {
       updatedOn: update.updatedOn,
       isAdm: update.isAdm,
     };
-  } else if (!isAdm && users[userIndex].uuid === id) {
+  } else if (!isAdm && users[userIndex].uuid === userId) {
     users[userIndex] = { ...users[userIndex], ...updatedUser };
     const update = users[userIndex];
     return {

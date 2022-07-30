@@ -17,7 +17,6 @@ const verifyAuthTokenMiddleware = (rq, rs, next) => {
       });
     }
 
-    console.log(decoded.sub, rq?.params, decoded.email, decoded.isAdm);
     rq.userId = decoded.sub;
     rq.userEmail = decoded.email;
     rq.isAdm = decoded.isAdm;

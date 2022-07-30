@@ -16,11 +16,9 @@ export const createUserController = async (rq, rs) => {
 export const deleteUserController = (rq, rs) => {
   const { id } = rq.params;
   const isAdm = rq.isAdm;
-  const deleter = rq.userId;
+  const userId = rq.userId;
 
-  console.log(id, deleter);
-
-  const deleteUser = deleteUserService({ id, isAdm });
+  const deleteUser = deleteUserService({ id, isAdm, userId });
 
   if (!deleteUser) {
     return rs.status(401).json({
@@ -44,11 +42,19 @@ export const retrieveUserController = (rq, rs) => {
 };
 
 export const updateUserController = (rq, rs) => {
-  const { email, name } = rq.body;
+  const { email, name, password } = rq.body;
   const { id } = rq.params;
   const isAdm = rq.isAdm;
+  const userId = rq.userId;
 
-  const updatedUser = updateUserService({ email, name, id, isAdm });
+  const updatedUser = updateUserService({
+    email,
+    name,
+    password,
+    id,
+    isAdm,
+    userId,
+  });
 
   if (!updatedUser) {
     return rs.status(401).json({
