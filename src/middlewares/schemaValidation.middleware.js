@@ -1,10 +1,10 @@
-const schemaValidationMiddleware = (schema) => async (rq, rs, next) => {
+const schemaValidationMiddleware = (schema) => async (req, res, next) => {
   try {
-    const validatedData = await schema.validate(rq.body);
-    rq.body = validatedData;
+    const validatedData = await schema.validate(req.body);
+    req.body = validatedData;
     next();
   } catch (error) {
-    return rs.status(400).json({
+    return res.status(400).json({
       message: error.errors.join(", "),
     });
   }

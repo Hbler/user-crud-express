@@ -5,47 +5,47 @@ import updateUserService from "../services/user/updateUser.service";
 import listUsersService from "../services/user/listUsers.service";
 import users from "../database";
 
-export const createUserController = async (rq, rs) => {
-  const { email, name, password, isAdm } = rq.body;
+export const createUserController = async (req, res) => {
+  const { email, name, password, isAdm } = req.body;
 
   const user = await createUserService({ email, name, password, isAdm });
 
-  return rs.status(201).json(user);
+  return res.status(201).json(user);
 };
 
-export const deleteUserController = (rq, rs) => {
-  const { id } = rq.params;
-  const isAdm = rq.isAdm;
-  const userId = rq.userId;
+export const deleteUserController = (req, res) => {
+  const { id } = req.params;
+  const isAdm = req.isAdm;
+  const userId = req.userId;
 
   const deleteUser = deleteUserService({ id, isAdm, userId });
 
   if (!deleteUser) {
-    return rs.status(401).json({
+    return res.status(401).json({
       message: "Missing admin permissions",
     });
   }
 
-  return rs.json(deleteUser);
+  return res.json(deleteUser);
 };
 
-export const retrieveUserController = (rq, rs) => {
-  const id = rq.userId;
+export const retrieveUserController = (req, res) => {
+  const id = req.userId;
 
   const profile = retrieveUserService(id);
 
   if (!profile) {
-    return rs.status(401).json({ message: "Invalid token." });
+    return res.status(401).json({ message: "Invalid token." });
   }
 
-  return rs.json(profile);
+  return res.json(profile);
 };
 
-export const updateUserController = (rq, rs) => {
-  const { email, name, password } = rq.body;
-  const { id } = rq.params;
-  const isAdm = rq.isAdm;
-  const userId = rq.userId;
+export const updateUserController = (req, res) => {
+  const { email, name, password } = req.body;
+  const { id } = req.params;
+  const isAdm = req.isAdm;
+  const userId = req.userId;
 
   const updatedUser = updateUserService({
     email,
@@ -57,24 +57,24 @@ export const updateUserController = (rq, rs) => {
   });
 
   if (!updatedUser) {
-    return rs.status(401).json({
+    return res.status(401).json({
       message: "Missing admin permissions",
     });
   }
 
-  return rs.json(updatedUser);
+  return res.json(updatedUser);
 };
 
-export const listUsersController = (rq, rs) => {
-  const isAdm = rq.isAdm;
+export const listUsersController = (req, res) => {
+  const isAdm = req.isAdm;
 
   if (!isAdm) {
-    return rs.status(401).json({
+    return res.status(401).json({
       message: "Unauthorized",
     });
   }
 
   const users = listUsersService();
 
-  return rs.json(users);
+  return res.json(users);
 };

@@ -1,13 +1,13 @@
 import users from "../database";
 
-const verifyAdminStatusMiddleware = (rq, rs, next) => {
-  const isAdm = rq.isAdm;
+const verifyAdminStatusMiddleware = (req, res, next) => {
+  const isAdm = req.isAdm;
 
   if (isAdm) {
-    return rs.json(users);
+    return res.json(users);
   }
 
-  return rs.status(401).json({
+  return res.status(401).json({
     message: "Unauthorized",
   });
 };

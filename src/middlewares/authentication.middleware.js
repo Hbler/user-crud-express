@@ -1,25 +1,25 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
-const verifyAuthTokenMiddleware = (rq, rs, next) => {
-  let accessToken = rq.headers.authorization;
+const verifyAuthTokenMiddleware = (req, res, next) => {
+  let accessToken = req.headers.authorization;
 
   if (!accessToken) {
-    return rs.status(401).json({ message: "Missing authorization token." });
+    return res.status(401).json({ message: "Missing authorization token." });
   }
 
   accessToken = accessToken.split(" ")[1];
 
   jwt.verify(accessToken, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
-      return rs.status(401).json({
+      return res.status(401).json({
         message: "Missing authorization headers",
       });
     }
 
-    rq.userId = decoded.sub;
-    rq.userEmail = decoded.email;
-    rq.isAdm = decoded.isAdm;
+    req.userId = decoded.sub;
+    req.userEmail = decoded.email;
+    req.isAdm = decoded.isAdm;
 
     next();
   });

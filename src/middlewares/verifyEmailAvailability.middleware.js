@@ -1,12 +1,12 @@
 import users from "../database";
 
-const verifyEmailAvailabilityMiddleware = (rq, rs, next) => {
-  const { email } = rq.body;
+const verifyEmailAvailabilityMiddleware = (req, res, next) => {
+  const { email } = req.body;
 
   const userAlreadyExists = users.find((user) => user.email === email);
 
   if (userAlreadyExists) {
-    return rs.status(400).json({ message: "E-mail already registered." });
+    return res.status(400).json({ message: "E-mail already registered." });
   }
 
   next();
